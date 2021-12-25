@@ -45,7 +45,7 @@ class QuestionsController < BaseController
 
   def destroy
     question = current_user.questions.find(params[:id])
-    question.destroy
+    question.destroy!
     redirect_to questions_url,
                 notice: "質問「#{question.title}」を削除しました。"
   end
