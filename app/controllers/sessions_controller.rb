@@ -22,7 +22,7 @@ class SessionsController < BaseController
 
   private
 
-  def session_params
-    params.require(:session).permit(:email, :password, :admin)
-  end
+    def session_params
+      params.require(:session).permit(:email, :password, :admin)
+    end
 end

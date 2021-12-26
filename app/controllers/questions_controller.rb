@@ -64,7 +64,7 @@ class QuestionsController < BaseController
 
   private
 
-  def question_params
-    params.require(:question).permit(:title, :content, :solved)
-  end
+    def question_params
+      params.require(:question).permit(:title, :content, :solved)
+    end
 end

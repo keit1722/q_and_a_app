@@ -14,7 +14,7 @@ class AnswersController < BaseController
 
   private
 
-  def answer_params
-    params.require(:answer).permit(:content)
-  end
+    def answer_params
+      params.require(:answer).permit(:content)
+    end
 end

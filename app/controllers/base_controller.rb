@@ -3,9 +3,9 @@ class BaseController < ApplicationController
 
   private
 
-  def check_regular_user
-    if current_user&.admin?
-      redirect_to admin_questions_url, notice: '権限がありません'
+    def check_regular_user
+      if current_user&.admin?
+        redirect_to admin_questions_url, notice: '権限がありません'
+      end
     end
-  end
 end

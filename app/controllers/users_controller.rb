@@ -40,9 +40,9 @@ class UsersController < BaseController
 
   private
 
-  def user_params
-    params
-      .require(:user)
-      .permit(:name, :email, :password, :password_confirmation, :admin, :image)
-  end
+    def user_params
+      params
+        .require(:user)
+        .permit(:name, :email, :password, :password_confirmation, :admin, :image)
+    end
 end
