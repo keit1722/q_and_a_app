@@ -1,5 +1,6 @@
 class UsersController < BaseController
   skip_before_action :login_required, only: %i[new create]
+  before_action :correct_user, only: %i[edit update]
 
   def new
     @user = User.new
@@ -15,9 +16,7 @@ class UsersController < BaseController
     end
   end
 
-  def edit
-    @user = User.find(params[:id])
-  end
+  def edit; end
 
   def show
     @user = User.find(params[:id])
@@ -29,8 +28,6 @@ class UsersController < BaseController
   end
 
   def update
-    @user = User.find(params[:id])
-
     if @user.update(user_params)
       redirect_to @user, notice: "ユーザー「#{@user.name}」を更新しました。"
     else
@@ -44,5 +41,10 @@ class UsersController < BaseController
       params
         .require(:user)
         .permit(:name, :email, :password, :password_confirmation, :admin, :image)
+    end
+
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to users_url unless @user == current_user
     end
 end
