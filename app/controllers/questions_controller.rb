@@ -51,7 +51,7 @@ class QuestionsController < BaseController
   end
 
   def create
-    @question = current_user.questions.new(question_params)
+    @question = current_user.questions.build(question_params)
 
     if @question.save
       UserMailer.send_questioned_email(@question).deliver_now
