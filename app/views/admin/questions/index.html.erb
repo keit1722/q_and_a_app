@@ -1,0 +1,56 @@
+<h1>質問一覧</h1>
+
+<%= search_form_for @q, url: "#{current_user.admin ? admin_questions_path : questions_path }", class: "mb-5" do |f| %>
+  <div class="form-group row">
+    <%= f.label :title_or_content_cont, "検索ワード", class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-10">
+      <%= f.search_field :title_or_content_cont, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.submit class: "btn btn-outline-primary" %>
+  </div>
+<% end %>
+
+<div class="mb-4">
+  <%= link_to '全て', "#{ current_user.admin ? admin_questions_path : questions_path }", class: "#{ params[:solved].nil? ? 'btn btn-success' : 'btn btn-outline-success' }" %>
+  <%= link_to '解決済み', "#{ current_user.admin ? admin_questions_path(solved: true) : questions_path(solved: true) }", class: "#{ params[:solved] == "true" ? 'btn btn-success' : 'btn btn-outline-success' }" %>
+  <%= link_to '未解決', "#{ current_user.admin ? admin_questions_path(solved: false) : questions_path(solved: false) }", class: "#{ params[:solved] == "false" ? 'btn btn-success' : 'btn btn-outline-success' }" %>
+</div>
+
+<%= paginate @questions %>
+<%= page_entries_info @questions %>
+
+<% if !current_user.admin? %>
+  <%= link_to "新規登録", new_question_path, class: "btn btn-primary" %>
+<% end %>
+
+<div class="mb-3"></div>
+
+<table class="table table-hover">
+  <thead class="thead-default">
+    <tr>
+      <th><%= Question.human_attribute_name(:title) %></th>
+      <th><%= User.human_attribute_name(:name) %></th>
+      <th><%= Question.human_attribute_name(:solved) %></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @questions.each do |question| %>
+      <tr>
+        <td><%= link_to_if !current_user.admin?, question.title, question_path(question) %></td>
+        <td><%= question.user.name %></td>
+        <td><%= question.solved ? "解決済み" : "未解決" %></td>
+        <td>
+          <% if current_user.admin? %>
+            <%= link_to "削除", admin_question_path(question), method: :delete, data: { confirm: "「#{question.title}を削除します。よろしいですか？」" }, class: "btn btn-danger" %>
+          <% elsif current_user.id == question.user_id %>
+            <%= link_to "編集", edit_question_path(question), class: "btn btn-primary mr-3" if !current_user.admin? %>
+            <%= link_to "削除", question_path(question), method: :delete, data: { confirm: "「#{question.title}を削除します。よろしいですか？」" }, class: "btn btn-danger" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

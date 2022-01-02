@@ -1,0 +1,7 @@
+<h1>質問の編集（仮）</h1>
+
+<div class="nav justify-content-end">
+  <%= link_to "一覧（仮）", questions_path, class: "nav-link" %>
+</div>
+
+<%= render partial: 'form', locals: { question: @question } %>

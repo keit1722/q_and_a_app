@@ -1,0 +1,44 @@
+<h1>ユーザーの詳細（仮）</h1>
+
+<div class="nav justify-content-end">
+  <%= link_to "一覧（仮）", users_path, class: "nav-link" %>
+</div>
+
+<table class="table table-hover">
+  <tbody>
+    <tr>
+      <th><%= User.human_attribute_name(:image) %></th>
+      <th>
+        <% if @user.image.attached? %>
+            <%= image_tag @user.image.variant(resize:'100x100')%>
+        <% else %>
+          <%= image_tag('default-image.png', size: '100x100') %>
+        <% end %>
+      </th>
+    </tr>
+    <tr>
+      <th><%= User.human_attribute_name(:id) %></th>
+      <th><%= @user.id %></th>
+    </tr>
+    <tr>
+      <th><%= User.human_attribute_name(:name) %></th>
+      <th><%= @user.name %></th>
+    </tr>
+    <tr>
+      <th><%= User.human_attribute_name(:email) %></th>
+      <th><%= @user.email %></th>
+    </tr>
+    <tr>
+      <th><%= User.human_attribute_name(:created_at) %></th>
+      <th><%= @user.created_at %></th>
+    </tr>
+    <tr>
+      <th><%= User.human_attribute_name(:updated_at) %></th>
+      <th><%= @user.updated_at %></th>
+    </tr>
+  </tbody>
+</table>
+
+<% if current_user.id == @user.id %>
+  <%= link_to "編集", edit_user_path, class: "btn btn-primary" %>
+<% end %>

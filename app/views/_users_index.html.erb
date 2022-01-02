@@ -1,0 +1,56 @@
+<h1>ユーザー一覧</h1>
+
+<%= search_form_for @q, url: "#{current_user.admin ? admin_users_path : users_path }", class: "mb-5" do |f| %>
+  <div class="form-group row">
+    <%= f.label :name_or_email_cont, "検索ワード", class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-10">
+      <%= f.search_field :name_or_email_cont, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.submit class: "btn btn-outline-primary" %>
+  </div>
+<% end %>
+
+<%= paginate @users %>
+<%= page_entries_info @users %>
+
+<div class="mb-3"></div>
+<table class="table table-hover">
+  <thead class="thead-default">
+    <tr>
+      <th></th>
+      <th><%= User.human_attribute_name(:name) %></th>
+      <th><%= User.human_attribute_name(:email) %></th>
+      <% if current_user.admin? %>
+        <th><%= User.human_attribute_name(:admin) %></th>
+      <% end %>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td>
+          <% if user.image.attached? %>
+            <%= image_tag user.image.variant(resize:'50x50')%>
+          <% else %>
+            <%= image_tag('default-image.png', size: '50x50') %>
+          <% end %>
+        </td>
+        <td><%= link_to_if !current_user.admin?, user.name, user_path(user) %></td>
+        <td><%= user.email %></td>
+        <% if current_user.admin? %>
+          <td><%= user.admin ? "あり" : "なし" %></td>
+        <% end %>
+        <td>
+          <% if current_user.admin? %>
+            <%= link_to "削除", admin_user_path(user), method: :delete, data: { confirm: "「#{user.name}を削除します。よろしいですか？」" }, class: "btn btn-danger" %>
+          <% elsif current_user.id == user.id %>
+            <%= link_to "編集", edit_user_path(user), class: "btn btn-primary" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,19 @@
+<% if question.errors.present? %>
+  <ul class="error_explanation">
+    <% question.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_with model: question, local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: "form-control", id: "question_title" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :content %>
+    <%= f.text_area :content, rows: 5, class: "form-control", id: "question_content" %>
+  </div>
+  <%= f.submit nil, class: "btn btn-primary" %>
+<% end %>
